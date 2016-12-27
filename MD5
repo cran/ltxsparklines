@@ -1,0 +1,11 @@
+97864ee77a4d4850f32c636db75c2557 *DESCRIPTION
+dd373f0ae8dd7ebdb0edfe01515c749f *NAMESPACE
+436238e7595146a5732aab996a7d21a8 *R/ltxsparklines.R
+42f5831e73f3879ca15b1d2f43b97808 *build/partial.rdb
+d7c53fc01cf5f44356e1445e801e874d *build/vignette.rds
+ea486eb008f41ed8cab87b31034b300c *inst/doc/ltxsparklines.R
+c1c9abece3b8c4bdda44a18543a6a72a *inst/doc/ltxsparklines.Rnw
+498b6ee56aca2579cee37a9309735a1b *inst/doc/ltxsparklines.pdf
+82c41d45feb6c4f94f49d9e2d77e9de9 *man/ltxsparklines-package.Rd
+3a34708183e7fea4d63308c15b60ce19 *man/sparkline.Rd
+c1c9abece3b8c4bdda44a18543a6a72a *vignettes/ltxsparklines.Rnw
