@@ -70,15 +70,15 @@
     if (nrow(df) <2) {
         return('')
     }
-    paste0("\\\\spark ",
+    paste0("\\spark ",
            paste0(as.numeric(t(as.matrix(df))),
                   collapse = ' '),
-           " /\\\n")
+           " /\n")
 }
 
 .plot_dots <- function (df) {
     if (ncol(df) < 3) {
-        df[,3] <- rep(getOption('ltxsparklines.defaultdotcolor'),
+        df[,3] <- rep(getOption('ltxsparklines.dotcolor'),
                       nrow(df))
     }
     df <- df[complete.cases(df),]
@@ -86,7 +86,7 @@
         return ("")
     }
     dots <- sapply(1:nrow(df), function(i) {
-        paste("\\\\sparkdot", df[i,1], df[i,2], df[i,3], "\\\n",
+        paste("\\sparkdot", df[i,1], df[i,2], df[i,3], "\n",
               sep=" ")})
     paste0(dots, collapse="")
 }
@@ -97,7 +97,7 @@
         return ("")
     }
     spikes <- sapply(1:nrow(df), function(i) {
-        paste("\\\\sparkspike", df[i,1], df[i,2], "\\\n",
+        paste("\\sparkspike", df[i,1], df[i,2], "\n",
               sep=" ")})
     paste0(spikes, collapse="")
 }
@@ -107,11 +107,14 @@
 .onLoad <- function (libname, pkgname) {
     opts <- list(
         ltxsparklines.width = 10,
+        ltxsparklines.clip = FALSE,
         ltxsparklines.na.rm = TRUE,
         ltxsparklines.bottomline = FALSE,
+        ltxsparklines.bottomlinex = c(NA, NA),
         ltxsparklines.startdotcolor = NA,
         ltxsparklines.enddotcolor = NA,
-        ltxsparklines.defaultdotcolor='blue')
+        ltxsparklines.dotcolor='blue',
+        ltxsparklines.output='knitr')
     new.opts <-  !(names (opts) %in% names(options()))
     if (any(new.opts)) {
         options(opts[new.opts])
@@ -128,17 +131,24 @@ sparkline <- function(x=NULL, y=NULL,
                       rectangle=c(NA,NA),
                       xlim=c(NA,NA),
                       ylim=c(NA,NA),
+                      clip=getOption('ltxsparklines.clip'),
                       na.rm=getOption('ltxsparklines.na.rm'),
                       bottomline=getOption('ltxsparklines.bottomline'),
                       bottomlinelength=NA,
+                      bottomlinex=getOption('ltxsparklines.bottomlinex'),
                       startdotcolor=getOption('ltxsparklines.startdotcolor'),
-                      enddotcolor=getOption('ltxsparklines.enddotcolor')) {
+                      enddotcolor=getOption('ltxsparklines.enddotcolor'),
+                      output=getOption('ltxsparklines.output')) {
 
     if(is.null(width) || is.na(width)) {
         width=10
     }
 
-    result <- paste0("\\\\begin{sparkline}{", width, "}\\\n");
+    if (clip) {
+        result <- paste0("\\begin{sparkline*}{", width, "}\n");
+    } else {
+        result <- paste0("\\begin{sparkline}{", width, "}\n");
+    }
     line <- .process_input(x,y, name='line')[,c(1,2)]
     if (na.rm && !is.null(line) && is.data.frame(line)) {
         line <- line[complete.cases(line),]
@@ -175,13 +185,14 @@ sparkline <- function(x=NULL, y=NULL,
     dots[,2] <- .range_normalize(dots[,2], ylim)
     rectangle <- .range_normalize(rectangle, ylim)
     bottomlinelength <- .range_normalize(bottomlinelength, xlim)
+    bottomlinex <- .range_normalize(bottomlinex, xlim)
 
 
     
     if (!is.na(rectangle[1]) && !is.na(rectangle[2])) {
-        result <- paste0(result, "\\\\sparkrectangle ",
+        result <- paste0(result, "\\sparkrectangle ",
                          rectangle[1], " ",
-                         rectangle[2], "\\\n")
+                         rectangle[2], "\n")
     }
 
     if (!is.null(spikes) && is.data.frame(spikes) && nrow(spikes)) {
@@ -229,11 +240,26 @@ sparkline <- function(x=NULL, y=NULL,
         if(is.na(bottomlinelength)) {
             bottomlinelength=1
         }
-        result <- paste0(result,"\\\\sparkbottomline[",
+        result <- paste0(result,"\\sparkbottomline[",
                          bottomlinelength,
-                         "]\\\n");
+                         "]\n");
     }
-    result <- paste0(result,"\\\\end{sparkline}%\\\n");
+    if(!is.null(bottomlinex) && !is.na(bottomlinex[1]) &&
+       !is.na(bottomlinex[x])) {
+        result <- paste0(result,"\\sparkbottomlinex",
+                         bottomlinex[1], " ",
+                         bottomlinex[2],
+                         " \n");
+    }
+    if (clip) {
+        result <- paste0(result,"\\end{sparkline*}");
+    } else {
+        result <- paste0(result,"\\end{sparkline}");
+    }
+    # Sweave bug/feature
+    if (output == 'inlineSweave') {
+        result <- gsub('([\\])', '\\1\\1\\1', result)
+    }
     return(result)
 }
                                             
