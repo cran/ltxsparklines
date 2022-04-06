@@ -1,12 +1,12 @@
-24da44b012fefe99c31d65c65b5a227c *DESCRIPTION
+a616c2afa8d311e4bcb44696bb886f61 *DESCRIPTION
 dd373f0ae8dd7ebdb0edfe01515c749f *NAMESPACE
 d2a1f31c5416618aad4138a4e23fc235 *NEWS
-578fee7f5f2d625765e219fe0a7ddb05 *R/ltxsparklines.R
-e2467201980e919f1d4f744f35f25dfd *build/partial.rdb
-d7c53fc01cf5f44356e1445e801e874d *build/vignette.rds
+0b122964036415c36f18bdf8dc0f6a9e *R/ltxsparklines.R
+d6ef3070e23ba0cc6c6d35977f0c0f6c *build/partial.rdb
+028cea59799e49d1d484e7011b966f80 *build/vignette.rds
 90775cfd1c923ea341d1c3c2bfd2264d *inst/doc/ltxsparklines.R
 60957aa4554a7368a74b83dd457f6d22 *inst/doc/ltxsparklines.Rnw
-997c83ea2e14c79bd22a05054809bcb2 *inst/doc/ltxsparklines.pdf
+04eb3bcab1ccadbaa87e00948d16b98d *inst/doc/ltxsparklines.pdf
 3f3da07b847ef0d5b8593821c89eb36e *man/ltxsparklines-package.Rd
 db7d04f52ac7c3b5410043b1f5e70668 *man/sparkline.Rd
 60957aa4554a7368a74b83dd457f6d22 *vignettes/ltxsparklines.Rnw
